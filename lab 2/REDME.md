@@ -27,3 +27,15 @@ c.	Назначьте cisco в качестве паролей консоли и
 ![](2026-07-14_17-19-36.png)
 
 ![](2026-07-14_17-21-36.png)
+
+d.	Назначьте class в качестве пароля доступа к привилегированному режиму EXEC.
+
+```
+S1#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+S1(config)#service password-encryption
+S1(config)#enable secret class
+```
+![](part1/s1_exec.png)
+
+![](part1/s2_exec.png)
