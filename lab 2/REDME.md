@@ -36,6 +36,9 @@ Enter configuration commands, one per line.  End with CNTL/Z.
 S1(config)#service password-encryption
 S1(config)#enable secret class
 ```
-![](part1/s1_exec.png)
-
-![](part1/s2_exec.png)
+```
+S2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+S2(config)#service password-encryption
+S2(config)#enable secret class
+```
