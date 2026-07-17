@@ -12,16 +12,17 @@
 ## Инструкции
 
 Заполните приведенные ниже таблицы, зная заданный IPv4-адрес, исходную и новую маску подсети.
-![](content/p1/problem.png)
-![](content/p1/problem.png)
-![](content/p1/problem.png)
-![](content/p1/problem.png)
-![](content/p1/problem.png)
-![](content/p1/problem.png)
-![](content/p1/problem.png)
-![](content/p1/problem.png)
-![](content/p1/problem.png)
-![](content/p1/problem.png)
+![](problem1.png)
+
+![](problem2.png)
+
+![](problem3.png)
+
+![](problem4.png)
+
+![](problem5.png)
+
+![](problem6.png)
 
 Маска подсети важна, потому что сам по себе IPv4-адрес не показывает, где заканчивается часть сети и начинается часть узла.
 Маска подсети нужна для того, чтобы правильно определить границы сети и понять, какие адреса относятся к одной подсети.
