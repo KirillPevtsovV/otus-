@@ -76,9 +76,9 @@
 
 ### Шаг 1. Настройте узлы ПК.
 
-![alt text](p6/s1/1.png)
+![alt text](611.png)
 
-![alt text](p6/s1/2.png)
+![alt text](612.png)
 
 ### Шаг 2. Выполните следующие тесты. Эхозапрос должен пройти успешно.
 
@@ -86,11 +86,11 @@
 
 ![alt text](p6/s2/2.png)
 
-![alt text](p6/s2/3.png)
+![alt text](621.png)
 
 ![alt text](p6/s2/4.png)
 
-![alt text](p6/s2/5.png)
+![alt text](622.png)
 
 ![alt text](p6/s2/6.png)
 
@@ -120,10 +120,10 @@
 
 ![alt text](p7/6.png)
 
-![alt text](p7/7.png)
+![alt text](71.png)
 
 ![alt text](p7/8.png)
 
-![alt text](p7/9.png)
+![alt text](72.png)
 
 ![alt text](p7/10.png)
