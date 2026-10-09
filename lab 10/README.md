@@ -86,22 +86,95 @@ Neighbor ID      Pri      State       Dead Time     Address         Interface
 R2 - DR, R1 - BDR
 Приоритет по интерфейсов умолчанию 1, выбор проходит по RouterID - R2 имеет более высокий RouterID (2.2.2.2) поэтому он становится DR, а R1 - BDR
 
-![alt text](p1/s1/4.png)
+```
+R1#show ip route ospf
+о
+192.168.1.0/32 is subnetted, 1 subnets
+192.168.1.1 [110/21 via 10.53.0.2, 00:07:51, GigabitEthernet0/0/1 R1#ping 192.168.1.1
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 192.168.1.1, timeout is 2 seconds: !!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 0/0/0 ms
+R1#
+```
+
 
 ## Часть 3. Оптимизация и проверка конфигурации OSPFv2 для одной области
 
 ### Шаг 1. Реализация различных оптимизаций на каждом маршрутизаторе.
 
-![alt text](p2/s1/1.png)
+```
+R1>enable
+R1#conf t
+Enter configuration commands, one per line. End with CNTL/Z.
+R1 (config)#interface g0/0/1
+R1 (config-if)#ip ospf priority 50
+R1 (config-if)#ip ospf hello-interval 30
+R1(config-if)#exit
+R1 (config)#
+```
 
-![alt text](p2/s1/2.png)
+```
+R2>enable
+R2#conf t
+Enter
+configuration commands, one per line. End with CNTL/2. R2 (config)#interface g0/0/1
+R2 (config-if)#ip ospf hello-interval 30
+R2 (config-if)#exit
+```
 
-![alt text](p2/s1/3.png)
+```
+R1>enable
+R1#conf t
+Enter configuration commands, one per line. End with CNTL/Z.
+R1 (config)#ip route 0.0.0.0 0.0.0.0 loopback 1
+*Default route without gateway, if not a point-to-point interface, may impact performance R1(config)#router ospf 56
+R1(config-router) #default-information originate
+R1(config-router) #exit
+```
 
-![alt text](p2/s1/4.png)
+```
+R2>enable
+R2#conf t
+Enter configuration commands, one per line. End with CNTL/2.
+R2 (config)#interface loopback 1
+R2(config-if)#ip ospf network point-to-point
+R2 (config-if)#exit
+R2 (config)#router ospf 56
+R2 (config-router) #passive-interface loopback 1
+R2(config-router) #exit
+R2 (config) #router ospf 56
+R2 (config-router) #auto-cost reference-bandwidth 1000
+OSPF: Reference bandwidth is changed.
+Please ensure reference bandwidth is consistent across all routers.
+R2 (config-router) #end
+R2#
+SYS-5-CONFIG_I: Configured from console by console
+R2#clear ip ospf process
+Reset ALL OSPF processes? [no]: yes
+R2#
+01:01:12: OSPF-5-ADJCHG: Process 56, Nbr 1.1.1.1 on GigabitEthernet0/0/1 from FULL to DOWN, Neighbor
+Down: Adjacency forced to reset
+01:01:12: OSPF-5-ADJCHG: Process 56, Nbr 1.1.1.1 on GigabitEthernet0/0/1 from FULL to DOWN, Neighbor
+Down: Interface down or detached
+```
 
-![alt text](p2/s1/5.png)
-
+```
+R1>enable
+R1#conf t
+Enter configuration commands, one per line. End with CNTL/2. R1(config)#router ospf 56
+R1(config-router) #auto-cost reference-bandwidth 1000
+OSPF: Reference bandwidth is changed.
+Please ensure reference bandwidth is consistent across all routers. R1(config-router) #end
+R1#
+\SYS-5-CONFIG_I: Configured from console by console
+R1#clear ip ospf process
+Reset ALL OSPF processes? [no]: yes
+R1#
+01:02:40: OSPF-5-ADJCHG: Process 56, Nbr 2.2.2.2 on GigabitEthernet0/0/1 from FULL to DOWN, Neighbor
+Down: Adjacency forced to reset
+01:02:40: OSPF-5-ADJCHG: Process 56, Nbr 2.2.2.2 on GigabitEthernet0/0/1 from FULL to DOWN, Neighbor
+Down: Interface down or detached
+```
 
 ### Шаг 2. Убедитесь, что оптимизация OSPFv2 реализовалась.
 
