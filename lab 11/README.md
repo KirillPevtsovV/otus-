@@ -27,7 +27,8 @@ S1 (config)#vlan 30
 S1(config-vlan)#name Operations
 S1(config-vlan)#exit
 S1 (config)#vlan 40 S1(config-vlan)#name Sales S1(config-vlan)#exit S1 (config)#vlan 999
-S1 (config-vlan)#name ParkingLot S1(config-vlan)#exit S1 (config) #vlan 1000 S1(config-vlan) #name Native. S1(config-vlan)#exit
+S1 (config-vlan)#name ParkingLot S1(config-vlan)#exit S1 (config) #vlan 1000 S1(config-vlan) #name Native.
+S1(config-vlan)#exit
 S1 (config)#interface vlan 20
 S1(config-if)#
 LINK-5-CHANGED: Interface Vlan20, changed state to up
