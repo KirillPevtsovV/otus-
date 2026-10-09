@@ -103,7 +103,7 @@ LINK-5-CHANGED: Interface FastEthernet0/2, changed state to administratively dow
 
 ### Шаг 2. Назначьте сети VLAN соответствующим интерфейсам коммутатора.
 
-
+![alt text](22.png)
 
 ## Часть 3. Настройте транки (магистральные каналы).
 
