@@ -178,9 +178,32 @@ Down: Interface down or detached
 
 ### Шаг 2. Убедитесь, что оптимизация OSPFv2 реализовалась.
 
-![alt text](p2/s2/1.png)
+```
+R1#show ip ospf interface g0/0/1
+GigabitEthernet0/0/1 is up, line protocol is up
+Internet address is 10.53.0.1/24, Area 0
+Process ID 56, Router ID 1.1.1.1, Network Type BROADCAST, Cost: 1 Transmit Delay is 1 sec, State DR, Priority 50
+Designated Router (ID) 1.1.1.1, Interface address 10.53.0.1
+Backup Designated Router (ID) 2.2.2.2, Interface address 10.53.0.2 Timer intervals configured, Hello 30, Dead 40, Wait 40, Retransmit 5 Hello due in 00:00:04
+Index 1/1, flood queue length 0
+Next 0x0 (0)/0x0 (0)
+Last flood scan length is 1, maximum is 1
+Last flood scan time is 0 msec, maximum is 0 msec
+Neighbor Count is 1, Adjacent neighbor count is 1
+Adjacent with neighbor 2.2.2.2 (Backup Designated Router)
+Suppress hello for 0 neighbor (s)
+R1#show ip route ospf
+о 192.168.1.0 [110/1] via 10.53.0.2, 00:18:37, GigabitEthernet0/0/1
+```
 
-![alt text](p2/s2/2.png)
+```
+R2# show ip route ospf
+0*32 0.0.0.0/0 [110/11 via 10.53.0.1, 00:20:00, GigabitEthernet0/0/1
+R2 #ping 172.16.1.1
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 172.16.1.1, timeout is 2 seconds: !!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 0/0/0 ms
+```
 
 **Почему стоимость OSPF для маршрута по умолчанию отличается от стоимости OSPF в R1 для сети 192.168.1.0/24?**
 
