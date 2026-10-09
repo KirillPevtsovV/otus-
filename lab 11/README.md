@@ -111,7 +111,69 @@ LINK-5-CHANGED: Interface FastEthernet0/2, changed state to administratively dow
 
 ### Шаг 1. Вручную настройте магистральный интерфейс F0/1.
 
-![alt text](22.png)
+```
+Sl>enable
+Sl#conf t
+Enter configuration commands, one per line. End with CNTL/Z.
+S1 (config)#interface fa0/1
+S1 (config-if)# switchport mode trunk
+S1(config-if)#
+* LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/1, changed state to down *LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/1, changed state to up
+*LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan20, changed state to up
+S1(config-if)# switchport trunk native vlan 1000
+S1(config-if)# switchport trunk allowed vlan 20, 30, 40, 1000
+S1 (config-if)#no shut
+S1 (config-if)#
+*CDP-4-NATIVE VLAN_MISMATCH: Native VLAN mismatch discovered on FastEthernet0/1 (1000), with S2 FastEthernet0/1 (1).
+exit
+S1(config)#SPANTREE-2-RECV_PVID_ERR: Received BPDU with inconsistent peer vlan id 1 on FastEthernet0/1 VLAN1000.
+SPANTREE-2-BLOCK_PVID_LOCAL: Blocking FastEthernet0/1 on VLAN1000. Inconsistent local
+vlan.
+end
+S1#
+SYS-5-CONFIG_I: Configured from console by console
+```
+
+```
+S2>
+S2>enable
+S2#conf t
+Enter configuration commands, one per line. End with CNTL/Z. S2 (config)#interface fa0/1
+S2 (config-if)# switchport mode trunk
+S2 (config-if)# switchport trunk native vlan 1000
+S2 (config-if)# switchport trunk allowed vlan 20, 30, 40, 1000
+S2 (config-if)#no shut
+S2 (config-if)#exit
+```
+
+```
+
+Port
+Mode
+S1#show interfaces trunk
+Port     Mode      Encapsulation     Status   
+Fa0/1
+
+Encapsulation Status
+Native vlan
+Fa0/1
+on
+802.1q
+trunking
+1000
+Port
+Vlans allowed on trunk
+Fa0/1
+20, 30, 40, 1000
+Port Fa0/1
+Port
+Fa0/1
+Vlans allowed and active in management domain 20, 30, 40, 1000
+Vlans in spanning tree forwarding state and not pruned 20, 30, 40, 1000
+
+
+
+
 
 ![alt text](p3/s1/2.png)
 
