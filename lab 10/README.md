@@ -12,6 +12,28 @@
 
 ### Шаг 1. Настройте адреса интерфейса и базового OSPFv2 на каждом маршрутизаторе.
 
+```
+R1#enable
+R1#conf t
+Enter configuration commands, one per line. End with CNTL/Z.
+R1 (config)#interface g0/0/1
+R1(config-if) tip address 10.53.0.1 255.255.255.0
+R1(config-if)#no shutdown
+R1(config-if)#
+*LINK-5-CHANGED: Interface GigabitEthernet0/0/1, changed state to up
+* LINE PROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/1, changed state to up
+R1(config-if)#interface loopback 1
+Rl (config-if)#
+LINK-5-CHANGED: Interface Loopbackl, changed state to up
+* LINE PROTO-5-UPDOWN: Line protocol on Interface Loopbackl, changed state to up
+R1(config-if)# ip address 172.16.1.1 255.255.255.0
+R1 (config-if)#exit
+R1 (config)#router ospf 56
+R1 (config-router) #router-id 1.1.1.1
+R1(config-router) #network 10.53.0.0 0.0.0.255 area 0
+R1(config-router) #exit
+```
+
 ![alt text](p1/s1/1.png)
 
 ![alt text](p1/s1/2.png)
