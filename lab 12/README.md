@@ -12,29 +12,148 @@
 
 ### Шаг 2. Произведите базовую настройку маршрутизаторов.
 
-![alt text](p1/s2/1.png)
+```
+R1>enable
+R1#conf t
+Enter configuration commands, one per line. End with CNTL/Z.
+R1 (config)#interface g0/0/0
+R1(config-if)#ip address 209.165.200.230 255.255.255.248 R1(config-if)#no shutdown
+R1 (config-if)#
+*LINK-5-CHANGED: Interface GigabitEthernet0/0/0, changed state to up
+R1(config-if)#exit
+R1 (config)#interface g0/0/1
+R1(config-if)#ip address 192.168.1.1 255.255.255.0
+R1 (config-if)#no shutdown
+R1(config-if)#
+LINK-5-CHANGED: Interface GigabitEthernet0/0/1, changed state to up
+& LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/1, changed state to up
+R1(config-if)#exit
+R1 (config) #exnd
+Invalid input detected at
+R1 (config) #end
+R1#
+marker.
+SYS-5-CONFIG_I: Configured from console by console
+R1#copy running-config startup-config Destination filename [startup-config)?
+Building configuration...
+[OK]
+R1#
+```
 
-![alt text](p1/s2/2.png)
+```
+R2>enable
+R2#conf t
+Enter
+configuration commands, one per line. End with CNTL/Z.
+R2 (config)#interface g0/0/0
+R2 (config-if)#ip address 209.165.200.225 255.255.255.248
+R2 (config-if)#no shutdown
+R2 (config-if)#
+LINK-5-CHANGED: Interface GigabitEthernet0/0/0, changed state to up
+* LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/0, changed state to up
+R2 (config-if)#exit
+R2 (config)#interface Lol
+R2 (config-if)#
+LINK-5-CHANGED: Interface Loopbackl, changed state to up
+* LINEPROTO-5-UPDOWN: Line protocol on Interface Loopbackl, changed state to up
+R2 (config-if)#ip address 209.165.200.1 255.255.255.224
+R2 (config-if)#exit
+R2 (config)#ip route 0.0.0.0 0.0.0.0 209.165.200.230 R2 (config)#end
+R2#
+\SYS-5-CONFIG_I: Configured from console by console
+R2#copy running-config startup-config Destination filename [startup-config)? Building configuration...
+[OK]
+R2#
+```
 
 ### Шаг 3. Настройте базовые параметры каждого коммутатора.
 
-![alt text](p1/s3/1.png)
+```
+Sl>enable
+Sl#conf t
+Enter configuration commands, one per line. End with CNTL/Z. S1 (config)#interface vlan 1
+S1 (config-if)#ip address 192.168.1.11 255.255.255.0
+S1(config-if)#no shut
+S1(config-if)#
+LINK-5-CHANGED: Interface Vlanl, changed state to up
+* LINEPROTO-5-UPDOWN: Line protocol on Interface Vlanl, changed state to up
+S1(config-if)#exit
+S1 (config)#interface range fa0/2-4, fa0/7-24, gi0/1-2
+S1(config-if-range) # shutdown
+```
 
-![alt text](p1/s3/2.png)
+```
+S2>enable
+S2#conf t
+Enter configuration commands, one per line. End with CNTL/2. S2 (config)#interface vlan 1
+S2 (config-if)# ip address 192.168.1.12 255.255.255.0
+S2 (config-if)#no shut
+S2 (config-if)#
+LINK-5-CHANGED: Interface Vlanl, changed state to up
+* LINEPROTO-5-UPDOWN: Line protocol on Interface Vlanl, changed state to up
+S2 (config-if)#exit
+S2 (config)#interface range fa0/2-17, fa0/19-24, gi0/1-2
+S2 (config-if-range) #shutdown
+```
 
 ## Часть 2. Настройка и проверка NAT для IPv4.
 
 ### Шаг 1. Настройте NAT на R1, используя пул из трех адресов 209.165.200.226-209.165.200.228. 
 
-![alt text](p2/s1/1.png)
+```
+R1>enable
+R1#conf t
+Enter configuration commands, one per line. End with CNTL/Z.
+R1 (config)#access-list 1 permit 192.168.1.0 0.0.0.255
+R1(config)#ip nat pool PUBLIC ACCESS 209.165.200.226 209.165.200.228 netmask 255.255.255.248
+R1 (config)#ip nat inside source list 1 pool PUBLIC ACCESS
+R1 (config)#interface g0/0/1 R1(config-if)#ip nat inside. R1 (config-if)#exit
+R1 (config)#interface g0/0/0 R1 (config-if)#ip nat outside R1(config-if)#exit
+R1 (config)#copy running-config startup-config
+Invalid input detected at
+marker.
+R1 (config)#exit
+R1#
+SYS-5-CONFIG_I: Configured from console by console
+R1#copy running-config startup-config Destination filename [startup-config]? Building configuration....
+[OK]
+R1#
+```
 
 ### Шаг 2. Проверьте и проверьте конфигурацию. 
 
 Пререквизит к выполнению - добавить маршрут по умолчанию на R1 до R2, иначе ping с PC-B не пройдет - ip route 0.0.0.0 0.0.0.0 209.165.200.225
 
-![alt text](p2/s2/1.png)
+```
+C:\>ping 209.165.200.1
 
-![alt text](p2/s2/2.png)
+Pinging 209.165.200.1 with 32 bytes of data:
+
+Reply from 209.165.200.1: bytes=32 time<lms TTL=254
+Reply from 209.165.200.1: bytes=32 time<lms TTL-254
+Reply from 209.165.200.1: bytes=32 time<lms TTL=254
+Reply from 209.165.200.1: bytes=32 time<lms TTL=254
+
+Ping statistics for 209.165.200.1:
+     Packets: Sent = 4, Received 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+     Minimum Oms, Maximum Oms, Average = Oms
+```
+
+
+Inside global
+R1#show ip nat translations Pro icmp 209.165.200.226:25192.168.1.3:25 icmp 209.165.200.226:26192.168.1.3:26 icmp 209.165.200.226:27192.168.1.3:27 icmp 209.165.200.226:28192.168.1.3:28
+Inside local
+Outside local
+Outside global
+209.165.200.1:25
+209.165.200.1:25
+209.165.200.1:26
+209.165.200.1:26
+209.165.200.1:27
+209.165.200.1:27
+209.165.200.1:28
+209.165.200.1:28
 
 **Во что был транслирован внутренний локальный адрес PC-B?**
 
