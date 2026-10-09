@@ -34,11 +34,52 @@ R1(config-router) #network 10.53.0.0 0.0.0.255 area 0
 R1(config-router) #exit
 ```
 
-![alt text](p1/s1/1.png)
+```
 
-![alt text](p1/s1/2.png)
+R2 #enable
+R2#conf t
+Enter configuration commands, one per line. End with CNTL/Z.
+R2 (config)#interface g0/0/1
+R2 (config-if)# ip address 10.53.0.2 255.255.255.0
+R2 (config-if)#no shutdown
+R2 (config-if)#
+*LINK-5-CHANGED: Interface GigabitEthernet0/0/1, changed state to up
+*LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/1, changed state to up
+R2 (config-if)#exit
+R2 (config)#interface loopback 1
+R2 (config-if)#
+LINK-5-CHANGED: Interface Loopbackl, changed state to up
+*LINEPROTO-5-UPDOWN: Line protocol on Interface Loopbackl, changed state to up
+R2 (config-if)#ip address 192.168.1.1 255.255.255.0
+R2 (config-if)#exit
+R2 (config)#router ospf 56
+R2 (config-router) #router-id 2.2.2.2
+R2 (config-router) #network 10.53.0.0 0.0.0.255 area 0
+R2 (config-router) #network 192.168.1.0 0.0.0.255 area 0
+R2 (config-router) #exirt
+01:21:37: OSPF-5-ADJCHG: Process 56, Nbr 1.1.1.1 on GigabitEthernet0/0/1 from LOADING to FULL, Loading Done
+Invalid input detected at A marker.
+R2 (config-router) #exit
+R2 (config)#end
+R2#
+\SYS-5-CONFIG_I: Configured from console by console
+write
+Building configuration...
+[OK]
+R2#
+R2# show ip ospf neighbor
 
-![alt text](p1/s1/3.png)
+
+Neighbor ID      Pri      State       Dead Time     Address         Interface
+1.1.1.1            1      FULL/DR     00:00:39      10.53.0.1       GigabitEthernet0/0/1
+```
+
+```
+R1#show ip ospf neighbor
+Neighbor ID      Pri      State       Dead Time     Address         Interface
+2.2.2.2            1      FULL/DR     00:00:30      10.53.0.2       GigabitEthernet0/0/1
+```
+
 
 **Какой маршрутизатор является DR? Какой маршрутизатор является BDR? Каковы критерии отбора?**
 
