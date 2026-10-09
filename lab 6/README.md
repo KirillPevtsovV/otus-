@@ -12,7 +12,7 @@
 
 #### Таблица VLAN
 
-![alt text](topology.png)
+![alt text](vlan.png)
 
 ### Часть 1. Создание и настройка сети
 
