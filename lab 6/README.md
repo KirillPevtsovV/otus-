@@ -4,15 +4,15 @@
 
 #### Топология
 
-![alt text](image-10.png)
+![alt text](topology.png)
 
 #### Таблица адресации
 
-![alt text](image-11.png)
+![alt text](address.png)
 
 #### Таблица VLAN
 
-![alt text](image-12.png)
+![alt text](topology.png)
 
 ### Часть 1. Создание и настройка сети
 
@@ -245,10 +245,9 @@ S2#
 
 #### 1.3 Настроить базовые параметры для каждого ПК
 
-![alt text](image-8.png)
+![alt text](1.png)
 
-![alt text](image-7.png)
-
+![alt text](2.png)
 Проверка
 
 ```
