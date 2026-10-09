@@ -105,6 +105,8 @@ LINK-5-CHANGED: Interface FastEthernet0/2, changed state to administratively dow
 
 ![alt text](22.png)
 
+![alt text](21.png)
+
 ## Часть 3. Настройте транки (магистральные каналы).
 
 ### Шаг 1. Вручную настройте магистральный интерфейс F0/1.
