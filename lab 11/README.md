@@ -588,30 +588,133 @@ R1>
 
 ### Политика 1 — запрет SSH в Management
 
-![alt text](p7/1.png)
+```
+R1>enable
+R1#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+R1(config)#ip access-list extended SALES-IN
+R1(config-ext-nacl)#deny tcp 10.40.0.0 0.0.0.255 10.20.0.0 0.0.0.255 eq 22
+```
 
 ### Политика 2 — запрет HTTP/HTTPS в Management
 
-![alt text](p7/2.png)
+```
+R1(config-ext-nacl)#deny tcp 10.40.0.0 0.0.0.255 10.20.0.0 0.0.0.255 eq 80
+R1(config-ext-nacl)#deny tcp 10.40.0.0 0.0.0.255 10.20.0.0 0.0.0.255 eq 443
+R1(config-ext-nacl)#deny tcp 10.40.0.0 0.0.0.255 host 10.30.0.1 eq 80
+R1(config-ext-nacl)#deny tcp 10.40.0.0 0.0.0.255 host 10.30.0.1 eq 443
+R1(config-ext-nacl)#deny tcp 10.40.0.0 0.0.0.255 host 10.40.0.1 eq 80
+R1(config-ext-nacl)#deny tcp 10.40.0.0 0.0.0.255 host 10.40.0.1 eq 443
+```
 
 ### Политика 3 — запрет ping в Operations и Management
 
-![alt text](p7/3.png)
+```
+R1(config-ext-nacl)#deny icmp 10.40.0.0 0.0.0.255 10.30.0.0 0.0.0.255 echo
+R1(config-ext-nacl)#deny icmp 10.40.0.0 0.0.0.255 10.20.0.0 0.0.0.255 echo
+R1(config-ext-nacl)#permit ip 10.40.0.0 0.0.0.255 any
+R1(config-ext-nacl)#exit
+R1(config)#interface g0/0/1.40
+R1(config-subif)#ip access-group SALES-IN in
+R1(config-subif)#exit
+```
 
 ### Политика 4 — запрет ICMP в Sales
 
-![alt text](p7/4.png)
+```
+R1(config)#ip access-list extended OPERATIONS-IN
+R1(config-ext-nacl)#deny icmp 10.30.0.0 0.0.0.255 10.40.0.0 0.0.0.255 echo
+R1(config-ext-nacl)#permit ip 10.30.0.0 0.0.0.255 any
+R1(config-ext-nacl)#exit
+R1(config)#interface g0/0/1.30
+R1(config-subif)#ip access-group OPERATIONS-IN in
+R1(config-subif)#exit
+R1(config)#end
+```
 
 ### Проверка ACL
 
-![alt text](p7/5.png)
+###PC-A
 
-![alt text](p7/6.png)
+```
+C:\>ping 10.40.0.10
 
-![alt text](p7/7.png)
+Pinging 10.40.0.10 with 32 bytes of data:
 
-![alt text](p7/8.png)
+Reply from 10.30.0.1: Destination host unreachable.
+Reply from 10.30.0.1: Destination host unreachable.
+Reply from 10.30.0.1: Destination host unreachable.
+Reply from 10.30.0.1: Destination host unreachable.
 
-![alt text](p7/9.png)
+Ping statistics for 10.40.0.10:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
 
-![alt text](p7/10.png)
+C:\>ping 10.20.0.1
+
+Pinging 10.20.0.1 with 32 bytes of data:
+
+Reply from 10.20.0.1: bytes=32 time<1ms TTL=255
+Reply from 10.20.0.1: bytes=32 time<1ms TTL=255
+Reply from 10.20.0.1: bytes=32 time<1ms TTL=255
+Reply from 10.20.0.1: bytes=32 time<1ms TTL=255
+
+Ping statistics for 10.20.0.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+    Approximate round trip times in milli-seconds:
+        Minimum = 0ms, Maximum = 0ms, Average = 0ms
+```
+
+###PC-B
+
+```
+C:\>ping 10.30.0.10
+
+Pinging 10.30.0.10 with 32 bytes of data:
+
+Reply from 10.40.0.1: Destination host unreachable.
+Reply from 10.40.0.1: Destination host unreachable.
+Reply from 10.40.0.1: Destination host unreachable.
+Reply from 10.40.0.1: Destination host unreachable.
+
+Ping statistics for 10.30.0.10:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+
+C:\>ping 10.20.0.1
+
+Pinging 10.20.0.1 with 32 bytes of data:
+
+Reply from 10.40.0.1: Destination host unreachable.
+Reply from 10.40.0.1: Destination host unreachable.
+Reply from 10.40.0.1: Destination host unreachable.
+Reply from 10.40.0.1: Destination host unreachable.
+
+Ping statistics for 10.20.0.1:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+
+C:\>ping 172.16.1.1
+
+Pinging 172.16.1.1 with 32 bytes of data:
+
+Reply from 172.16.1.1: bytes=32 time<1ms TTL=255
+Reply from 172.16.1.1: bytes=32 time<1ms TTL=255
+Reply from 172.16.1.1: bytes=32 time<1ms TTL=255
+Reply from 172.16.1.1: bytes=32 time<1ms TTL=255
+
+Ping statistics for 172.16.1.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+    Approximate round trip times in milli-seconds:
+        Minimum = 0ms, Maximum = 1ms, Average = 0ms
+```
+
+![alt text](71.png)
+
+![alt text](711.png)
+
+![alt text](72.png)
+
+```
+Password:
+
+
+R1>
+```
