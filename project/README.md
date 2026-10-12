@@ -371,8 +371,16 @@ IPS2#
 
 ## Часть 6. Настройка DNS на Server
 
-![alt text](vlan.png)
-![alt text](vlan.png)
-![alt text](vlan.png)
-![alt text](vlan.png)
-![alt text](vlan.png)
+![alt text](61.png)
+
+![alt text](62.png)
+
+## Часть 7. Настройка PC
+
+![alt text](71.png)
+
+![alt text](72.png)
+
+![alt text](73.png)
+
+![alt text](74.png)
