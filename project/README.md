@@ -304,3 +304,75 @@ Building configuration...
 [OK]
 IPS1#
 ```
+
+## Часть 5. Настройка IPS2 (второй роутер, второй провайдер)
+
+```
+Router>en
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname IPS2
+IPS2(config)#interface GigabitEthernet0/0/1
+IPS2(config-if)#ip address 10.10.20.1 255.255.255.252
+IPS2(config-if)#no shutdown
+
+IPS2(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/1, changed state to up
+exit
+IPS2(config)#interface GigabitEthernet0/0/0
+IPS2(config-if)#ip address 198.51.100.1 255.255.255.252
+IPS2(config-if)#no shutdown
+
+IPS2(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/0/0, changed state to up
+exit
+IPS2(config)#ip route 0.0.0.0 0.0.0.0 198.51.100.2
+IPS2(config)#access-list 1 permit 192.168.10.0 0.0.0.255
+IPS2(config)#access-list 1 permit 192.168.20.0 0.0.0.255
+IPS2(config)#router ospf 1 
+IPS2(config-router)#router-id 2.2.2.2
+IPS2(config-router)#network 198.51.100.0 0.0.0.255 area 0
+IPS2(config-router)#default-information originate 
+IPS2(config-router)#exit
+IPS2(config)#interface GigabitEthernet0/0/0
+IPS2(config-if)#ip nat outside
+IPS2(config-if)#exit
+IPS2(config)#interface GigabitEthernet0/0/1
+IPS2(config-if)#ip nat inside
+IPS2(config-if)#exit
+IPS2(config)#ip nat inside source list 1 interface GigabitEthernet0/0/0 overload
+IPS2(config)#cdp run
+IPS2(config)#lldp run
+IPS2(config)#ntp server 192.168.10.254
+IPS2(config)#ip domain-name example.com
+IPS2(config)#crypto key generate rsa general-keys modulus 1024
+The name for the keys will be: IPS2.example.com
+
+% The key modulus size is 1024 bits
+% Generating 1024 bit RSA keys, keys will be non-exportable...[OK]
+*Mar 1 6:45:2.502: %SSH-5-ENABLED: SSH 1.99 has been enabled
+IPS2(config)#username admin secret cisco
+IPS2(config)#ip ssh version 2
+IPS2(config)#line vty 0 15
+IPS2(config-line)#transport input ssh
+IPS2(config-line)#login local
+IPS2(config-line)#exit
+IPS2(config)#end
+IPS2#
+%SYS-5-CONFIG_I: Configured from console by console
+copy running-config startup-config
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+IPS2#
+```
+
+## Часть 6. Настройка DNS на Server
+
+![alt text](vlan.png)
+![alt text](vlan.png)
+![alt text](vlan.png)
+![alt text](vlan.png)
+![alt text](vlan.png)
