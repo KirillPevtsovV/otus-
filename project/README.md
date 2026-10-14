@@ -1074,13 +1074,15 @@ R-B(config-router)#no passive-interface GigabitEthernet0/0/1.55
 
 ###  Шаг 4. Маршрут по умолчанию через OSPF
 
+```
 R-B(config)#router ospf 56
 R-B(config-router)#default-information originate
 R-B(config-router)#exit
-
+```
 
 ### Шаг 5. Настройте OSPF на R2
 
+```
 R-C>enable
 R-C#configure terminal
 Enter configuration commands, one per line. End with CNTL/Z.
@@ -1102,16 +1104,18 @@ R-C#show ip ospf neighbor
 Neighbor ID     Pri   State           Dead Time   Address         Interface
 1.1.1.1         1     FULL/DR         00:00:36    10.255.0.1      GigabitEthernet0/0/0
 R-C#
-
+```
 
 ### Шаг 6. Проверка OSPF-маршрутов на маршрутизаторах
+
+```
 R-C#show ip route ospf
 O    192.168.11.0 [110/2] via 10.255.0.1, 00:01:16, GigabitEthernet0/0/0
 O    192.168.22.0 [110/2] via 10.255.0.1, 00:01:16, GigabitEthernet0/0/0
 O    192.168.33.0 [110/2] via 10.255.0.1, 00:01:16, GigabitEthernet0/0/0
 O    192.168.44.0 [110/2] via 10.255.0.1, 00:01:16, GigabitEthernet0/0/0
 O*E2 0.0.0.0/0 [110/1] via 10.255.0.1, 00:01:16, GigabitEthernet0/0/0
-
+```
 
 ### Шаг 10. Итоговая проверка OSPF
 
@@ -1161,12 +1165,12 @@ Routing Information Sources:
 
 | № | Источник | Назначение | Политика |
 |---:|---|---|---|
-| 1 | HQ Guest VLAN 40 | Все корпоративные IPv4-сети | **Deny** |
-| 2 | Branch Guest VLAN 140 | Все корпоративные IPv4-сети | **Deny** |
+| 1 | HQ Guest VLAN 44 | Все корпоративные IPv4-сети | **Deny** |
+| 2 | Branch Guest VLAN 88 | Все корпоративные IPv4-сети | **Deny** |
 | 3 | HQ Guest / Branch Guest | Internet | **Permit** |
-| 4 | HQ Users VLAN 30 | Management VLAN 10 и 110 по SSH | **Deny TCP/22** |
-| 5 | Branch Users VLAN 120 | Management VLAN 10 и 110 по SSH | **Deny TCP/22** |
-| 6 | Administration VLAN 20 | Management | **Permit** |
+| 4 | HQ Users VLAN 33 | Management VLAN 10 и 110 по SSH | **Deny TCP/22** |
+| 5 | Branch Users VLAN 77 | Management VLAN 10 и 110 по SSH | **Deny TCP/22** |
+| 6 | Administration VLAN 22 | Management | **Permit** |
 | 7 | Остальной пользовательский трафик | Разрешённые сети | **Permit** |
 
 ### Шаг 2. ACL для HQ Guest
