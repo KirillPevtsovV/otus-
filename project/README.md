@@ -45,7 +45,7 @@
 | 77 | Users | R‑C: G0/0/1.77; SW‑C: порт доступа для PC5 |
 | 88 | Guest | R‑C: G0/0/1.88; SW‑C: порт доступа для PC6 |
 | 41 | VLAN41 | SW‑A: SVI VLAN 41; порты доступа для PC1, PC2 |
-| 41 | VLAN51 | SW‑B: SVI VLAN 41; порты доступа для PC3, PC4 |
+| 41 | VLAN41 | SW‑B: SVI VLAN 41; порты доступа для PC3, PC4 |
 | 71 | VLAN71 | SW‑C: SVI VLAN 71; порты доступа для PC5, PC6 |
 | 999 | ParkingLot | SW‑A: F0/3–4, F0/9–24, G0/1–2; SW‑B: F0/3–4, F0/8–24, G0/1–2; SW‑C: F0/1–4, F0/8–24, G0/1–2 |
 | 1000 | Native | - |
