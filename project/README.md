@@ -1168,8 +1168,8 @@ Routing Information Sources:
 | 1 | HQ Guest VLAN 44 | Все корпоративные IPv4-сети | **Deny** |
 | 2 | Branch Guest VLAN 88 | Все корпоративные IPv4-сети | **Deny** |
 | 3 | HQ Guest / Branch Guest | Internet | **Permit** |
-| 4 | HQ Users VLAN 33 | Management VLAN 10 и 110 по SSH | **Deny TCP/22** |
-| 5 | Branch Users VLAN 77 | Management VLAN 10 и 110 по SSH | **Deny TCP/22** |
+| 4 | HQ Users VLAN 33 | Management VLAN 11 и 66 по SSH | **Deny TCP/22** |
+| 5 | Branch Users VLAN 77 | Management VLAN 11 и 66 по SSH | **Deny TCP/22** |
 | 6 | Administration VLAN 22 | Management | **Permit** |
 | 7 | Остальной пользовательский трафик | Разрешённые сети | **Permit** |
 
